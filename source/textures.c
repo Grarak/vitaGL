@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
+/*
  * textures.c:
  * Implementation for textures related functions
  */
@@ -862,7 +862,7 @@ static inline __attribute__((always_inline)) void _glTexImage2D_FlatIMPL(texture
 			while (pot_h < height) {
 				pot_h = pot_h << 1;
 			}
-						
+
 			// stb_dxt expects input as RGBA8888, so we convert input texture if necessary
 			void *target_data = (void *)data;
 			if ((uintptr_t)read_cb != (uintptr_t)readRGBA) {
@@ -885,9 +885,9 @@ static inline __attribute__((always_inline)) void _glTexImage2D_FlatIMPL(texture
 					vgl_fast_memcpy(&dst[pot_w * y], &src[width * y], width * 4);
 				}
 			}
-			
+
 			gpu_alloc_compressed_texture(level, pot_w, pot_h, tex_format, 0, target_data, tex, data_bpp, read_cb);
-			
+
 			// If we needed a temp memory for input data, we likely needed to turn our texture into pot, so we patch back original texture size into sceGxm descriptor
 			if (target_data != data) {
 				vgl_free(target_data);
@@ -948,7 +948,7 @@ static inline __attribute__((always_inline)) void _glTexSubImage2D(texture *tex,
 	} else if (tex->status != TEX_VALID) {
 		SET_GL_ERROR(GL_INVALID_OPERATION)
 	}
-#endif	
+#endif
 
 #ifdef HAVE_TEX_CACHE
 	restoreTexCache(tex);
@@ -1551,7 +1551,7 @@ void _glCompressedTexImage2D(texture *tex, GLenum target, GLint level, GLenum in
 						while (pot_h < height) {
 							pot_h = pot_h << 1;
 						}
-						
+
 						// stb_dxt expects input as RGBA8888, so we convert input texture if necessary
 						void *target_data = decompressed_data;
 						if ((uintptr_t)read_cb != (uintptr_t)readRGBA) {
@@ -1574,12 +1574,12 @@ void _glCompressedTexImage2D(texture *tex, GLenum target, GLint level, GLenum in
 								vgl_fast_memcpy(&dst[pot_w * y], &src[width * y], width * 4);
 							}
 						}
-						
+
 						if (target == GL_TEXTURE_2D)
 							gpu_alloc_compressed_texture(level, pot_w, pot_h, tex_format, 0, target_data, tex, data_bpp, read_cb);
 						else
 							gpu_alloc_compressed_cube_texture(pot_w, pot_h, tex_format, 0, target_data, tex, data_bpp, read_cb, target - GL_TEXTURE_CUBE_MAP_POSITIVE_X);
-						
+
 						// If we needed a temp memory for input data, we likely needed to turn our texture into pot, so we patch back original texture size into sceGxm descriptor
 						if (target_data != decompressed_data) {
 							vgl_free(target_data);
@@ -1601,7 +1601,7 @@ void _glCompressedTexImage2D(texture *tex, GLenum target, GLint level, GLenum in
 								trans_fmt = SCE_GXM_TRANSFER_FORMAT_U8U8U8U8_ABGR;
 								break;
 							}
-							gpu_alloc_cube_texture(width, height, tex_format, trans_fmt, decompressed_data, tex, data_bpp, target - GL_TEXTURE_CUBE_MAP_POSITIVE_X);	
+							gpu_alloc_cube_texture(width, height, tex_format, trans_fmt, decompressed_data, tex, data_bpp, target - GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 						}
 					}
 				} else if (read_cb) {
@@ -1849,7 +1849,7 @@ void glTexImage2D(GLenum target, GLint level, GLint internalFormat, GLsizei widt
 
 void glTextureImage2D(GLuint tex_id, GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 #ifndef SKIP_ERROR_HANDLING
 	// Checking if texture is too big for sceGxm
 	if (width > GXM_TEX_MAX_SIZE || height > GXM_TEX_MAX_SIZE) {
@@ -1915,19 +1915,19 @@ void glTextureImage1D(GLuint tex_id, GLenum target, GLint level, GLint internalF
 #endif
 }
 
-void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels) {	
+void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels) {
 	// Setting some aliases to make code more readable
 	texture_unit *tex_unit = &texture_units[server_texture_unit];
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glTexSubImage2D(tex, target, level, xoffset, yoffset, width, height, format, type, pixels);
 }
 
 void glTextureSubImage2D(GLuint tex_id, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glTexSubImage2D(tex, target, level, xoffset, yoffset, width, height, format, type, pixels);
 }
 
@@ -1953,13 +1953,13 @@ void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalFormat, G
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glCompressedTexImage2D(tex, target, level, internalFormat, width, height, border, imageSize, data);
 }
 
 void glCompressedTextureImage2D(GLuint tex_id, GLenum target, GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glCompressedTexImage2D(tex, target, level, internalFormat, width, height, border, imageSize, data);
 }
 
@@ -1996,13 +1996,13 @@ void glTexParameteri(GLenum target, GLenum pname, GLint param) {
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glTexParameteri(tex, target, pname, param);
 }
 
 void glTextureParameteri(GLuint tex_id, GLenum target, GLenum pname, GLint param) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glTexParameteri(tex, target, pname, param);
 }
 
@@ -2012,13 +2012,13 @@ void glTexParameterx(GLenum target, GLenum pname, GLfixed param) {
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glTexParameterx(tex, target, pname, param);
 }
 
 void glTextureParameterx(GLuint tex_id, GLenum target, GLenum pname, GLfixed param) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glTexParameterx(tex, target, pname, param);
 }
 
@@ -2028,13 +2028,13 @@ void glTexParameterf(GLenum target, GLenum pname, GLfloat param) {
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glTexParameteri(tex, target, pname, (GLint)param);
 }
 
 void glTextureParameterf(GLuint tex_id, GLenum target, GLenum pname, GLfloat param) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glTexParameteri(tex, target, pname, (GLint)param);
 }
 
@@ -2044,13 +2044,13 @@ void glTexParameteriv(GLenum target, GLenum pname, GLint *param) {
 	int texture2d_idx;
 	resolveTexTarget(target, SET_GL_ERROR_WITH_VALUE(GL_INVALID_ENUM, target));
 	texture *tex = &texture_slots[texture2d_idx];
-	
+
 	_glTexParameteri(tex, target, pname, param[0]);
 }
 
 void glTextureParameteriv(GLuint tex_id, GLenum target, GLenum pname, GLint *param) {
 	texture *tex = &texture_slots[tex_id];
-	
+
 	_glTexParameteri(tex, target, pname, param[0]);
 }
 
@@ -2455,4 +2455,34 @@ SceGxmTexture *vglGetGxmTexture(GLenum target) {
 	default:
 		SET_GL_ERROR_WITH_RET(GL_INVALID_ENUM, NULL)
 	}
+}
+
+void *vglRemapTexPtr() {
+    texture_unit *tex_unit = &texture_units[server_texture_unit];
+	int texture2d_idx = tex_unit->tex_id[0];
+	texture *tex = &texture_slots[texture2d_idx];
+
+	SceGxmTextureFormat tex_format = sceGxmTextureGetFormat(&tex->gxm_tex);
+	uint8_t bpp = tex_format_to_bytespp(tex_format);
+	uint32_t orig_w = sceGxmTextureGetWidth(&tex->gxm_tex);
+	uint32_t orig_h = sceGxmTextureGetHeight(&tex->gxm_tex);
+	uint32_t stride = VGL_ALIGN(orig_w, 8) * bpp;
+
+	if (tex->last_frame != OBJ_NOT_USED && (vgl_framecount - tex->last_frame <= FRAME_PURGE_FREQ)) {
+		void *texture_data = gpu_alloc_mapped(orig_h * stride, VGL_MEM_MAIN);
+		gpu_free_texture_data(tex);
+		sceGxmTextureSetData(&tex->gxm_tex, texture_data);
+		tex->data = texture_data;
+		tex->last_frame = OBJ_NOT_USED;
+	}
+	return tex->data;
+}
+
+void glTexImage2Drgba5(GLsizei width, GLsizei height) {
+	// Setting some aliases to make code more readable
+	texture_unit *tex_unit = &texture_units[server_texture_unit];
+	int texture2d_idx = tex_unit->tex_id[0];
+	texture *tex = &texture_slots[texture2d_idx];
+
+	gpu_alloc_texture(width, height, SCE_GXM_TEXTURE_FORMAT_U1U5U5U5_ABGR, NULL, tex, 2, NULL, NULL, GL_TRUE);
 }

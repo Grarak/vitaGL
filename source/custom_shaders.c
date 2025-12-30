@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
+/*
  * custom_shaders.c:
  * Implementation for custom shaders feature
  */
@@ -223,7 +223,7 @@ char vgl_file_cache_path[256];
 		} \
 	}
 #endif
-	
+
 #define setupFragProgram() \
 	if ((p->blend_info.raw != blend_info.raw) || (is_fbo_float != p->is_fbo_float)) { \
 		p->is_fbo_float = is_fbo_float; \
@@ -231,7 +231,7 @@ char vgl_file_cache_path[256];
 		rebuild_frag_shader(p->fshader->id, &p->fprog, (SceGxmProgram *)p->vshader->prog, is_fbo_float ? SCE_GXM_OUTPUT_REGISTER_FORMAT_HALF4 : SCE_GXM_OUTPUT_REGISTER_FORMAT_UCHAR4); \
 	} \
 	sceGxmSetFragmentProgram(gxm_context, p->fprog);
-	
+
 #define alignAttributes(attributes, streams) \
 	if (p->has_unaligned_attrs) { \
 		attributes = temp_attributes; \
@@ -246,7 +246,7 @@ char vgl_file_cache_path[256];
 		attributes = cur_vao->vertex_attrib_config; \
 		streams = cur_vao->vertex_stream_config; \
 	}
-	
+
 #ifdef HAVE_FFP_SHADER_SUPPORT
 const char *ffp_bind_names[FFP_BINDS_NUM] = {
 	"gl_ModelViewProjectionMatrix",
@@ -827,7 +827,7 @@ void _glMultiDrawArrays_CustomShadersIMPL(SceGxmPrimitiveType gxm_p, uint16_t *i
 
 	// Uploading both fragment and vertex uniforms data
 	uploadUniforms();
-	
+
 	for (int j = 0; j < drawcount; j++) {
 		// Uploading vertex streams
 		for (int i = 0; i < p->attr_num; i++) {
@@ -847,7 +847,7 @@ void _glMultiDrawArrays_CustomShadersIMPL(SceGxmPrimitiveType gxm_p, uint16_t *i
 #endif
 			}
 		}
-		
+
 		sceGxmDraw(gxm_context, gxm_p, SCE_GXM_INDEX_FORMAT_U16, idx_ptr, count[j]);
 	}
 #ifdef HAVE_PROFILING
@@ -1588,7 +1588,7 @@ void glShaderSource(GLuint handle, GLsizei count, const GLchar *const *string, c
 #endif
 	// Grabbing passed shader
 	shader *s = &shaders[handle - 1];
-	
+
 	uint32_t size = 1;
 	size_t lengths[32];
 
@@ -1628,7 +1628,7 @@ void glCompileShader(GLuint handle) {
 	if (!is_shark_online && !startShaderCompiler()) {
 		SET_GL_ERROR(GL_INVALID_OPERATION)
 	}
-	
+
 #ifdef HAVE_GLSL_TRANSLATOR
 	// If we use VGL_MODE_POSTPONED, we compile shaders in glLinkProgram
 	if (glsl_sema_mode == VGL_MODE_POSTPONED)
@@ -1637,7 +1637,7 @@ void glCompileShader(GLuint handle) {
 
 	// Grabbing passed shader
 	shader *s = &shaders[handle - 1];
-	
+
 #ifdef HAVE_SHADER_CACHE
 	char fname[256];
 	sprintf(fname, "%s/%llX.gxp", vgl_shader_cache_path, XXH3_64bits(s->source, s->size));
@@ -1678,7 +1678,7 @@ void glAttachShader(GLuint prog, GLuint shad) {
 	// Grabbing passed shader and program
 	shader *s = &shaders[shad - 1];
 	program *p = &progs[prog - 1];
-	
+
 	// Attaching shader to desired program
 	if (p->status == PROG_UNLINKED && s->valid) {
 		switch (s->type) {
@@ -1696,7 +1696,7 @@ void glAttachShader(GLuint prog, GLuint shad) {
 #endif
 				// Setting progressive default attribute bindings
 				setDefaultAttribBindings();
-#ifdef HAVE_GLSL_TRANSLATOR			
+#ifdef HAVE_GLSL_TRANSLATOR
 			}
 #endif
 			break;
@@ -2145,7 +2145,7 @@ void glLinkProgram(GLuint progr) {
 			vgl_memset(u->data, 0, u->size * sizeof(float));
 		}
 	}
-	
+
 
 	// Analyzing vertex shader
 #ifdef HAVE_FFP_SHADER_SUPPORT
@@ -2319,7 +2319,7 @@ GLint glGetUniformLocation(GLuint prog, const GLchar *name) {
 	// Getting the desired location
 	for (uint32_t i = 0; i < cnt; i++) {
 		if (j[i].ptr == u) {
-#ifdef STRICT_UNIFORMS_COMPLIANCE			
+#ifdef STRICT_UNIFORMS_COMPLIANCE
 			ret.offset = 0;
 			ret.zero = 0;
 			ret.program_idx = prog - 1;
@@ -3111,7 +3111,7 @@ void glBindBufferBase(GLenum target, GLuint index, GLuint buffer) {
 void glBindAttribLocation(GLuint prog, GLuint index, const GLchar *name) {
 	// Grabbing passed program
 	program *p = &progs[prog - 1];
-	
+
 #ifdef HAVE_GLSL_TRANSLATOR
 	// If we use VGL_MODE_POSTPONED, we perform attributes binding in glLinkProgram
 	if (glsl_sema_mode == VGL_MODE_POSTPONED) {
@@ -3128,7 +3128,7 @@ void glBindAttribLocation(GLuint prog, GLuint index, const GLchar *name) {
 	if (param == NULL || sceGxmProgramParameterGetCategory(param) != SCE_GXM_PARAMETER_CATEGORY_ATTRIBUTE)
 		return;
 	uint32_t attrIndex = sceGxmProgramParameterGetResourceIndex(param);
-	
+
 	// Swapping any previously made bind to the requested attribute
 	for (int i = 0; i < p->attr_highest_idx; i++) {
 		if (p->attr[i].regIndex == attrIndex) {
@@ -3136,7 +3136,7 @@ void glBindAttribLocation(GLuint prog, GLuint index, const GLchar *name) {
 			break;
 		}
 	}
-	
+
 	// Set new binding to the requested attribute
 	p->attr[index].regIndex = attrIndex;
 	if ((p->attr_highest_idx == 0) || (p->attr_highest_idx - 1 < index))
@@ -3236,7 +3236,7 @@ void glGetActiveUniform(GLuint prog, GLuint index, GLsizei bufSize, GLsizei *len
 			}
 		}
 	}
-	
+
 	// Copying uniform name
 #ifdef HAVE_GLSL_TRANSLATOR
 	// texture, sampler and matrix are reserved keywords in CG but are not in GLSL
@@ -3421,8 +3421,8 @@ void vglCgShaderSource(GLuint handle, GLsizei count, const GLchar *const *string
 #endif
 	// Grabbing passed shader
 	shader *s = &shaders[handle - 1];
-	
-	uint32_t size = 1;	
+
+	uint32_t size = 1;
 	for (int i = 0; i < count; i++) {
 		size += length ? length[i] : strlen(string[i]);
 	}
@@ -3446,7 +3446,7 @@ void vglAddSemanticBinding(const GLchar *const *varying, GLint index, GLenum typ
 	if (glsl_custom_bindings_num >= MAX_CUSTOM_BINDINGS) {
 		vgl_log("%s:%d %s: Too many custom bindings supplied. Consider increasing MAX_CUSTOM_BINDINGS.\n", __FILE__, __LINE__, __func__);
 		return;
-	}			
+	}
 #endif
 	strcpy(glsl_custom_bindings[glsl_custom_bindings_num].name, varying);
 	glsl_custom_bindings[glsl_custom_bindings_num].idx = index;
@@ -3461,7 +3461,7 @@ void vglAddSemanticBindingHint(const GLchar *const *varying, GLenum type) {
 	if (glsl_custom_bindings_num >= MAX_CUSTOM_BINDINGS) {
 		vgl_log("%s:%d %s: Too many custom bindings supplied. Consider increasing MAX_CUSTOM_BINDINGS.\n", __FILE__, __LINE__, __func__);
 		return;
-	}			
+	}
 #endif
 	strcpy(glsl_custom_bindings[glsl_custom_bindings_num].name, varying);
 	glsl_custom_bindings[glsl_custom_bindings_num].idx = -1;
@@ -3493,4 +3493,19 @@ void vglOverrideTexFormat(GLenum target) {
 		break;
 	}
 #endif
+}
+
+void vglBindFragUbo(GLuint index) {
+    program *p = &progs[cur_program - 1];
+
+    if (p->frag_ubos) {
+		ubo *u = p->frag_ubos;
+		while (u) {
+		    if (u->idx == index) {
+				u->bind = index;
+				return;
+			}
+			u = (ubo *)u->chain;
+		}
+	}
 }
