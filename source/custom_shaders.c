@@ -1112,13 +1112,6 @@ GLboolean _glDrawElements_CustomShadersIMPL(uint16_t *idx_buf, GLsizei count, ui
 #ifdef HAVE_TEX_CACHE
 			restoreTexCache(tex);
 #endif
-#ifndef SKIP_ERROR_HANDLING
-			int r = sceGxmTextureValidate(&tex->gxm_tex);
-			if (r) {
-				vgl_log("%s:%d glDrawElements: Fragment %s texture on TEXUNIT%d is invalid (%s), draw will be skipped.\n", __FILE__, __LINE__, tex_type ? "cube" : "2D", i, get_gxm_error_literal(r));
-				return GL_FALSE;
-			}
-#endif
 #ifndef TEXTURES_SPEEDHACK
 			tex->last_frame = vgl_framecount;
 #endif
