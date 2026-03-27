@@ -2114,7 +2114,7 @@ void glLinkProgram(GLuint progr) {
 		SceGxmParameterCategory cat = sceGxmProgramParameterGetCategory(param);
 		if (cat == SCE_GXM_PARAMETER_CATEGORY_SAMPLER || (cat == SCE_GXM_PARAMETER_CATEGORY_UNIFORM && sceGxmProgramParameterGetContainerIndex(param) == UBOS_NUM)) {
 			p->frag_uniforms_num++;
-		} else if (cat == SCE_GXM_PARAMETER_CATEGORY_UNIFORM_BUFFER) {
+		} else if ((int) cat == 4) {
 			ubo *u = (ubo *)vglMalloc(sizeof(ubo));
 			u->chain = p->frag_ubos;
 			u->idx = sceGxmProgramParameterGetResourceIndex(param);
@@ -2170,7 +2170,7 @@ void glLinkProgram(GLuint progr) {
 			p->attr_num++;
 		} else if (cat == SCE_GXM_PARAMETER_CATEGORY_SAMPLER || (cat == SCE_GXM_PARAMETER_CATEGORY_UNIFORM && sceGxmProgramParameterGetContainerIndex(param) == UBOS_NUM)) {
 			p->vert_uniforms_num++;
-		} else if (cat == SCE_GXM_PARAMETER_CATEGORY_UNIFORM_BUFFER) {
+		} else if ((int) cat == 4) {
 			ubo *u = (ubo *)vglMalloc(sizeof(ubo));
 			u->chain = p->vert_ubos;
 			u->idx = sceGxmProgramParameterGetResourceIndex(param);
