@@ -145,8 +145,8 @@ void glDeleteFramebuffers(GLsizei n, const GLuint *ids) {
 			if (fb->target)
 				markRtAsDirty(fb->target);
 #ifndef DEPTH_STENCIL_HACK
-			if (fb->depthbuffer_ptr && fb->is_depth_hidden)
-				markAsDirty(fb->depthbuffer_ptr->depthData);
+			// if (fb->depthbuffer_ptr && fb->is_depth_hidden)
+			// 	markAsDirty(fb->depthbuffer_ptr->depthData);
 #endif
 		}
 	}
